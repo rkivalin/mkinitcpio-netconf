@@ -25,11 +25,11 @@ build ()
 	  echo "Systemd is enabled, but there are no .initramfs files under /etc/systemd/network; exit"
 	  return 0
       else
-	  for network in $(ls /etc/systemd/network/*.initramfs); do
-	      if [ -s $network ]; then
-		  initramfs_strip=$(echo $network | sed -e 's/\.initramfs//g')
+	  for network in /etc/systemd/network/*.initramfs; do
+	      if [ -s "$network" ]; then
+		  initramfs_strip=${network%.initramfs}
 		  echo "Added $network to $initramfs_strip"
-		  add_file $network $initramfs_strip
+		  add_file "$network" "$initramfs_strip" 644
 	      fi
 	  done
       fi
